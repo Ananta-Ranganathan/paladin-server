@@ -2,12 +2,16 @@ const express = require('express')
 
 const app = express()
 
-const port = process.env.PORT | 3000
+const cors = require('cors')
+
+app.use(cors())
+
+const port = process.env.PORT | 8000
 
 const tickers = require('./tickers.json')
 
 app.get('/', (req, res) => {
-    res.jsonp(tickers)
+    res.json(tickers)
 })
 
 app.listen(port, () => {
