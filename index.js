@@ -8,13 +8,12 @@ app.use(cors())
 
 const { spawn } = require('child_process')
 
-
 const port = process.env.PORT || 8000
 
 const tickers = require('./tickers.json')
 
 app.get('/', (req, res) => {
-    let args = ['batchest']
+    let args = []
     const python = spawn('python', ['script.py', `${args}`])
     python.stdout.on('data', (data) => {
         console.log(`${data}`)
@@ -29,5 +28,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {
-    
+
 })
