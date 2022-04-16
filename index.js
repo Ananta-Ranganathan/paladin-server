@@ -19,16 +19,19 @@ const port = process.env.PORT || 8000
 const tickers = require('./tickers.json')
 
 app.get('/', (req, res) => {
-    // MongoClient.connect(uri, function(err, db) {
-    //     if (err) throw err
-    //     var dbo = db.db("scores")
-    //     dbo.collection("tickers").find({"name":"GOOGL"}).toArray(function(err, result) {
-    //         if (err) throw err
-    //         console.log(result)
-    //         db.close()
-    //     })
-    // })
-    res.json(tickers)
+    MongoClient.connect(uri, function(err, db) {
+        let stockscores = {}
+        if (err) throw err
+        var dbo = db.db("scores")
+        dbo.collection("tickers").find().toArray(function(err, result) {
+            if (err) throw err
+            for (i in result) {
+                stockscores[result[i]["name"]] = result[i]["scores"]
+            }
+            res.json(stockscores)
+            db.close()
+        })
+    })
 })
 
 app.listen(port, () => {
