@@ -6,7 +6,7 @@ const cors = require('cors')
 
 app.use(cors())
 
-const port = process.env.PORT | 8000
+const port = process.env.PORT || 8000
 
 const tickers = require('./tickers.json')
 
