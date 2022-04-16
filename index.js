@@ -14,7 +14,7 @@ const port = process.env.PORT || 8000
 const tickers = require('./tickers.json')
 
 app.get('/', (req, res) => {
-    let args = req.ip
+    let args = ['batchest']
     const python = spawn('python', ['script.py', `${args}`])
     python.stdout.on('data', (data) => {
         console.log(`${data}`)
@@ -29,5 +29,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {
-
+    
 })
