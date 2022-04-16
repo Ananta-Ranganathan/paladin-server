@@ -14,9 +14,20 @@ const port = process.env.PORT || 8000
 const tickers = require('./tickers.json')
 
 app.get('/', (req, res) => {
+    let args = req.ip
+    const python = spawn('python', ['script.py', `${args}`])
+    python.stdout.on('data', (data) => {
+        console.log(`${data}`)
+    })
+    python.stderr.on('data', (data) => {
+        console.log(`${data}`)
+    })
+    python.on('exit', (code) => {
+        console.log(`child process exited with code ${code}`)
+    })
     res.json(tickers)
 })
 
 app.listen(port, () => {
-    console.log('hi anata im in your computer lel')
+
 })
