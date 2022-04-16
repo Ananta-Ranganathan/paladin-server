@@ -6,23 +6,27 @@ const cors = require('cors')
 
 app.use(cors())
 
-const { spawn } = require('child_process')
+const dotenv = require('dotenv')
+
+dotenv.config()
+
+const MongoClient = require('mongodb').MongoClient
+
+const uri = process.env.MONGODB_URI
 
 const port = process.env.PORT || 8000
 
 const tickers = require('./tickers.json')
 
 app.get('/', (req, res) => {
-    let args = []
-    const python = spawn('python', ['script.py', `${args}`])
-    python.stdout.on('data', (data) => {
-        console.log(`${data}`)
-    })
-    python.stderr.on('data', (data) => {
-        console.log(`${data}`)
-    })
-    python.on('exit', (code) => {
-        console.log(`child process exited with code ${code}`)
+    MongoClient.connect(uri, function(err, db) {
+        if (err) throw err
+        var dbo = db.db("scores")
+        dbo.collection("tickers").find({"name":"GOOGL"}).toArray(function(err, result) {
+            if (err) throw err
+            console.log(result)
+            db.close()
+        })
     })
     res.json(tickers)
 })
