@@ -6,6 +6,9 @@ const cors = require('cors')
 
 app.use(cors())
 
+const { spawn } = require('child_process')
+
+
 const port = process.env.PORT || 8000
 
 const tickers = require('./tickers.json')
